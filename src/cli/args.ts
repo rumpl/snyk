@@ -1,5 +1,5 @@
 import * as abbrev from 'abbrev';
-
+// import { modes } from './modes'
 import debugModule = require('debug');
 
 export declare interface Global extends NodeJS.Global {
@@ -52,6 +52,8 @@ export interface ArgsOptions {
   _: MethodArgs;
   [key: string]: boolean | string | MethodArgs | string[]; // The two last types are for compatibility only
 }
+
+// snyk [mode?] [command] [paths?] [options-double-dash]
 
 export function args(rawArgv: string[]): Args {
   const argv = {
@@ -111,6 +113,17 @@ export function args(rawArgv: string[]): Args {
   // an argument to our command, like `snyk help protect`
   let command = argv._.shift() as string; // can actually be undefined
 
+  const modes = [
+    'cloud-config'
+  ];
+
+  if (modes.includes(command)) {
+    console.log('Mode ' + command + 'was found')
+    argv[command] = true;
+    
+    command = argv._.shift() as string; // can actually be undefined
+  } 
+  
   // alias switcheroo - allows us to have
   if (cli.aliases[command]) {
     command = cli.aliases[command];
