@@ -10,13 +10,13 @@ const woofs = {
   ru: ' Гав!',
 };
 
-export = function woof(...args0: MethodArgs) {
-  const args = [...args0];
-  let options: WoofOptions = {};
-  if (typeof args[args.length - 1] === 'object') {
-    options = (args.pop() as ArgsOptions) as WoofOptions;
-  }
-  const lang = options.language || 'en';
+export = function woof() {
+  // const args = [...args0];
+  // let options: WoofOptions = {};
+  // if (typeof args[args.length - 1] === 'object') {
+  //   options = (args.pop() as ArgsOptions) as WoofOptions;
+  // }
+  const lang = 'en';
   console.log(`
     |         |
    /|         |\\
