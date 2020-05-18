@@ -1,5 +1,4 @@
-import gitUrlParse = require('git-url-parse');
-
+import * as url from 'url';
 import subProcess = require('../../sub-process');
 import { DepTree } from '../../types';
 import { GitTarget } from '../types';
@@ -23,8 +22,15 @@ export async function getInfo(
     ).trim();
 
     if (origin) {
-      const parsedOrigin = gitUrlParse(origin);
-      target.remoteUrl = parsedOrigin.toString('http');
+      const { protocol, host, pathname } = url.parse(origin);
+
+      if (host && protocol && ['ssh:', 'http:', 'https:'].includes(protocol)) {
+        // same format for parseable URLs
+        target.remoteUrl = `http://${host}${pathname}`;
+      } else {
+        // else keep the original
+        target.remoteUrl = origin;
+      }
     }
   } catch (err) {
     // Swallowing exception since we don't want to break the monitor if there is a problem
